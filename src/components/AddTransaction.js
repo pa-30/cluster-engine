@@ -11,14 +11,18 @@ export const AddTransaction = () => {
   const [token, setToken] = useState('')
   const [open, setOpen] = useState(false);
 
-  const onSubmit = e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const newTransaction = {
       name,
       url,
       token
     };
-    dispatch(addTransaction(newTransaction));
+    await dispatch(addTransaction(newTransaction));
+    setName('');
+    setUrl('');
+    setToken('');
+    setOpen(false);
   };
 
   // const handleInputChangeAccount = (e) => {
@@ -69,12 +73,14 @@ export const AddTransaction = () => {
           <div style={{padding:'5px'}}>          <label className="form-label" style={{ marginBottom: '10px' }}>Cluster Name</label>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter cluster name..." required />
           </div>
-<div style={{padding:'5px'}}>          <label className="form-label" style={{ marginBottom: '10px' }}>Cluster URL</label>
+         <div style={{padding:'5px'}}>         
+          <label className="form-label" style={{ marginBottom: '10px' }}>Cluster URL</label>
           <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Enter cluster url..." required />
           </div>
-<div style={{padding:'5px'}}>          <label className="form-label" style={{ marginBottom: '10px' }}>Cluster token</label>
-          <input type="text" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Enter cluster token..." required />
-        </div>
+          <div style={{padding:'5px'}}>         
+          <label className="form-label" style={{ marginBottom: '10px' }}>Cluster token</label>
+            <input type="text" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Enter cluster token..." required />
+          </div>
 
           <button className="btn" style={{marginTop:'30px', marginBottom: '25px' }}>Add</button>
         </form>
@@ -82,3 +88,6 @@ export const AddTransaction = () => {
     </>
   );
 };
+
+
+

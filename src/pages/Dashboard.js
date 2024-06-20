@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import { getTransactions, reset } from '../features/transactions/transactionSlice';
+import { AddTransaction } from '../components/AddTransaction';
 // import { Balance } from '../components/Balance';
 // import { IncomeExpenses } from '../components/IncomeExpenses';
 import { TransactionList } from '../components/TransactionList';
@@ -9,14 +10,14 @@ import { TransactionList } from '../components/TransactionList';
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const { isLoading, isError, message } = useSelector((state) => state.transactions);
+  const { transactions, isLoading, isError, message } = useSelector((state) => state.transactions);
 
   // const [chart, setChart] = useState(false);
   // const [hist, setHist] = useState(true);
 
   useEffect(() => {
     if (isError) {
-      console.log(message);
+      console.error(message);
     }
 
     dispatch(getTransactions());
@@ -30,6 +31,9 @@ function Dashboard() {
     return <Spinner />;
   }
 
+  if (isError) {
+    return <div className="error">Error: {message}</div>;
+  }
   // const handleChart = () => { 
   //   setChart(true); 
   //   setHist(false);
@@ -42,18 +46,15 @@ function Dashboard() {
 
   return (
     <>
-            {
-        isLoading ? <Spinner /> :
-          <>
-
-      <section className='heading'>
-        <h3><i>Validate your Clusters in one go !!!!</i></h3>
+    <section className='heading'>
+    <h3><i>Validate your Clusters in one go !!!!</i></h3>
+    
         {/* <Balance /> */}
-      </section>
+    </section>
       {/* <IncomeExpenses /> */}
       
       <section>
-      <TransactionList />
+        <TransactionList transactions={transactions} />
       </section>
       {/* <section className='content'>
         <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
@@ -63,9 +64,12 @@ function Dashboard() {
         {chart && <TransactionCharts />}
         {hist && <TransactionList />}
       </section> */}
-      </> }
+       
     </>
   );
 }
 
 export default Dashboard;
+
+
+
