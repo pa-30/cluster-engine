@@ -147,7 +147,7 @@ export const exportReport = async (transactionId) => {
     };
   
     try {
-      await axiosInstance.get(`${transactionId}/report', config);
+      await axiosInstance.get(`${transactionId}/report`, config);
       return { id: transactionId }; // Ensure the correct ID is returned
     } catch (error) {
       const message = handleRequestError(error); // Use handleRequestError here
