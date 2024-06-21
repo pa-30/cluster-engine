@@ -163,6 +163,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import transactionService from './transactionService';
+import { toast } from 'react-toastify';
 
 const initialState = {
   transactions: [],
@@ -177,15 +178,18 @@ export const addTransaction = createAsyncThunk(
   'transactions/add',
   async (transactionData, thunkAPI) => {
     try {
-      return await transactionService.addTransaction(transactionData);
+        const response = await transactionService.addTransaction(transactionData);
+        toast.success('Transaction added successfully.');
+        return response;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+        const message =
+            (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        toast.error(`Failed to add transaction: ${message}`);
+        return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -195,15 +199,17 @@ export const getTransactions = createAsyncThunk(
   'transactions/getAll',
   async (_, thunkAPI) => {
     try {
-      return await transactionService.getTransactions();
+        const response = await transactionService.getTransactions();
+        
+        return response;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+        const message =
+            (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -213,15 +219,18 @@ export const updateTransaction = createAsyncThunk(
   'transactions/update',
   async (transactionData, thunkAPI) => {
     try {
-      return await transactionService.updateTransaction(transactionData);
+        const response = await transactionService.updateTransaction(transactionData);
+        toast.success('Transaction updated successfully.');
+        return response;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+        const message =
+            (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        toast.error(`Failed to update transaction: ${message}`);
+        return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -231,16 +240,19 @@ export const deleteTransaction = createAsyncThunk(
   'transactions/delete',
   async (id, thunkAPI) => {
     try {
-      return await transactionService.deleteTransaction(id);
+        const response=await transactionService.deleteTransaction(id);
+        toast.success('Transaction deleted successfully.');
+        return response;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+        const message =
+            (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        toast.error(`Failed to delete transaction: ${message}`);
+        return thunkAPI.rejectWithValue(message);
+        }
   }
 );
 
@@ -249,14 +261,17 @@ export const generateReport = createAsyncThunk(
     'transactions/generateReport',
     async (transactionId, thunkAPI) => {
       try {
-        return await transactionService.generateReport(transactionId);
+        const response= await transactionService.generateReport(transactionId);
+        toast.success('Report generated successfully.');
+        return response;
       } catch (error) {
         const message =
-          (error.response &&
+            (error.response &&
             error.response.data &&
             error.response.data.message) ||
-          error.message ||
-          error.toString();
+            error.message ||
+            error.toString();
+        toast.error(`Failed to generate report: ${message}`);
         return thunkAPI.rejectWithValue(message);
       }
     }
@@ -267,7 +282,9 @@ export const generateReport = createAsyncThunk(
     'transactions/exportReport',
     async (transactionId, thunkAPI) => {
       try {
-        return await transactionService.exportReport(transactionId);
+        const response = await transactionService.exportReport(transactionId);
+        toast.success('Report exported successfully.');
+        return response;
       } catch (error) {
         const message =
           (error.response &&
@@ -275,6 +292,7 @@ export const generateReport = createAsyncThunk(
             error.response.data.message) ||
           error.message ||
           error.toString();
+        toast.error(`Failed to export report: ${message}`);
         return thunkAPI.rejectWithValue(message);
       }
     }
@@ -289,7 +307,7 @@ export const transactionSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addTransaction.pending, (state) => {
+    .addCase(addTransaction.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(addTransaction.fulfilled, (state, action) => {
@@ -337,14 +355,14 @@ export const transactionSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.transactions = state.transactions.filter(
-          (transaction) => transaction.id !== action.payload.id
+          (transaction) => transaction.id !== action.payload.id // Use action.payload directly
         );
       })
       .addCase(deleteTransaction.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-      });
+    });
   },
 });
 

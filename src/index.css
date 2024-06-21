@@ -366,3 +366,40 @@ ul{
   z-index: 0;
 }
 
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  width: 40%;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  appearance: button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width:100%;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.action-btn:hover {
+  background-color: #0056b3;
+}
