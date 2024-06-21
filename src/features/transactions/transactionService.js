@@ -147,11 +147,29 @@ export const exportReport = async (transactionId) => {
     };
   
     try {
-      await axiosInstance.get(`${transactionId}/report`, config);
-      return { id: transactionId }; // Ensure the correct ID is returned
-    } catch (error) {
-      const message = handleRequestError(error); // Use handleRequestError here
-      throw new Error(message);
+        const response = await axiosInstance.get(`${transactionId}/report`, config);
+    
+        // Create a new Blob object using the response data
+        const blob = new Blob([response.data], { type: 'text/html' });
+    
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `report_${transactionId}.html`; // Set the file name
+    
+        // Append the link to the document body
+        document.body.appendChild(link);
+    
+        // Programmatically click the link to trigger the download
+        link.click();
+    
+        // Clean up by removing the link from the document
+        document.body.removeChild(link);
+    
+        return { id: transactionId }; // Ensure the correct ID is returned
+      } catch (error) {
+        const message = handleRequestError(error); // Use handleRequestError here
+        throw new Error(message);
     }
 };
 
