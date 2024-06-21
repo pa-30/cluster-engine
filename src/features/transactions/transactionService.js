@@ -124,7 +124,7 @@ export const deleteTransaction = async (transactionId) => {
   }
 };
 
-export const generateReport = async (transactionId) => {
+export const generateReport = async (transactionData) => {
     const config = {
         headers: {
                 'Content-Type': 'application/json'
@@ -133,8 +133,8 @@ export const generateReport = async (transactionId) => {
     };
   
     try {
-      await axiosInstance.post(`${transactionId}/report`,transactionData, config);
-      return { id: transactionId }; // Ensure the correct ID is returned
+      await axiosInstance.post(`${transactionData.id}/report`,transactionData, config);
+      return { id: transactionData.id }; // Ensure the correct ID is returned
     } catch (error) {
       const message = handleRequestError(error); // Use handleRequestError here
       throw new Error(message);

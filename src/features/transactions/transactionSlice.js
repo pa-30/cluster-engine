@@ -259,9 +259,9 @@ export const deleteTransaction = createAsyncThunk(
 // Generate report async thunk
 export const generateReport = createAsyncThunk(
     'transactions/generateReport',
-    async (transactionId, transactionData, thunkAPI) => {
+    async (transactionData, thunkAPI) => {
       try {
-        const response= await transactionService.generateReport(transactionId,transactionData);
+        const response= await transactionService.generateReport(transactionData);
         toast.success('Report generated successfully.');
         return response;
       } catch (error) {
