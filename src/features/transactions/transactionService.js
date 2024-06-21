@@ -124,11 +124,45 @@ export const deleteTransaction = async (transactionId) => {
   }
 };
 
+export const generateReport = async (transactionId) => {
+    const config = {
+        headers: {
+                'Content-Type': 'application/json'
+        },
+        retry: 3, // Number of retries for this specific request
+    };
+  
+    try {
+      await axiosInstance.post(`${transactionId}/report`, config);
+      return { id: transactionId }; // Ensure the correct ID is returned
+    } catch (error) {
+      const message = handleRequestError(error); // Use handleRequestError here
+      throw new Error(message);
+    }
+};
+  
+export const exportReport = async (transactionId) => {
+    const config = {
+      retry: 3, // Number of retries for this specific request
+    };
+  
+    try {
+      await axiosInstance.get(`${transactionId}/report', config);
+      return { id: transactionId }; // Ensure the correct ID is returned
+    } catch (error) {
+      const message = handleRequestError(error); // Use handleRequestError here
+      throw new Error(message);
+    }
+};
+
+
 const transactionService = {
   addTransaction,
   getTransactions,
   updateTransaction,
   deleteTransaction,
+  generateReport,
+  exportReport,
 };
 
 export default transactionService;
