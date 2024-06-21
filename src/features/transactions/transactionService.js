@@ -133,7 +133,7 @@ export const generateReport = async (transactionId) => {
     };
   
     try {
-      await axiosInstance.post(`${transactionId}/report`, config);
+      await axiosInstance.post(`${transactionId}/report`,transactionData, config);
       return { id: transactionId }; // Ensure the correct ID is returned
     } catch (error) {
       const message = handleRequestError(error); // Use handleRequestError here

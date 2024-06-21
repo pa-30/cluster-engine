@@ -18,13 +18,12 @@ export const Transaction = ({ transaction }) => {
     setIsOpen(false);
   }
   const handleGenerateReport = () => {
-    dispatch(generateReport(transaction.id));
-    // Optionally handle success or failure here
+    dispatch(generateReport(transaction.id, transaction));
   };
 
   const handleExportReport = () => {
     dispatch(exportReport(transaction.id));
-    // Optionally handle success or failure here
+    
   };
 
   return (
