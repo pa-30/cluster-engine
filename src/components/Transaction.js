@@ -3,12 +3,14 @@ import { deleteTransaction ,generateReport, exportReport} from '../features/tran
 import { useDispatch } from 'react-redux'
 import { useState } from 'react';
 import Panel from './Panel';
-
+import Spinner from './Spinner'; 
+import { toast } from 'react-toastify';
 
 export const Transaction = ({ transaction }) => {
     
   const dispatch = useDispatch()
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   console.log("Single transaction", transaction)
 
   const openModal = () => {
@@ -17,17 +19,35 @@ export const Transaction = ({ transaction }) => {
   const closeModal = () => {
     setIsOpen(false);
   }
-  const handleGenerateReport = () => {
-    dispatch(generateReport(transaction));
+  const handleGenerateReport = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(generateReport(transaction));
+      // Optionally handle success
+    } catch (error) {
+      // Optionally handle error
+      console.error('Failed to generate report:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleExportReport = () => {
-    dispatch(exportReport(transaction.id));
-    
+  const handleExportReport = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(exportReport(transaction.id));
+      // Optionally handle success
+    } catch (error) {
+      // Optionally handle error
+      console.error('Failed to export report:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div style={{ marginBottom: '15px', paddingBottom: '10px' }}>
+      {isLoading && <Spinner />}
       <li>
         <h5 style={{ padding: '10px' }}> {transaction.name}</h5>
           
