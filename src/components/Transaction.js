@@ -4,13 +4,15 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react';
 import Panel from './Panel';
 import Spinner from './Spinner'; 
-import { toast } from 'react-toastify';
+
+
 
 export const Transaction = ({ transaction }) => {
     
   const dispatch = useDispatch()
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isReportGenerated, setIsReportGenerated] = useState(false);
   console.log("Single transaction", transaction)
 
   const openModal = () => {
@@ -24,9 +26,11 @@ export const Transaction = ({ transaction }) => {
     try {
       await dispatch(generateReport(transaction));
       // Optionally handle success
+      setIsReportGenerated(true); 
     } catch (error) {
       // Optionally handle error
       console.error('Failed to generate report:', error);
+      setIsReportGenerated(false); 
     } finally {
       setIsLoading(false);
     }
@@ -49,13 +53,17 @@ export const Transaction = ({ transaction }) => {
     <div style={{ marginBottom: '15px', paddingBottom: '10px' }}>
       {isLoading && <Spinner />}
       <li>
-        <h5 style={{ padding: '10px' }}> {transaction.name}</h5>
+        <h5 style={{ padding: '25px 0',  margin:'0' }}> {transaction.name}</h5>
           
       <button onClick={() => dispatch(deleteTransaction(transaction.id))} className="delete-btn"><i className="fas fa-trash-alt"></i></button>
       <button onClick={openModal} className="edit-btn"><i className="fas fa-pen-square"></i></button>
       <div className='action-buttons'>
       <button className="action-btn" onClick={handleGenerateReport}  >Generate Report</button>
-      <button className="action-btn"  onClick={handleExportReport} >Export</button>
+      <button className="action-btn"  onClick={handleExportReport} disabled={!isReportGenerated} style={{ 
+              backgroundColor: isReportGenerated ? '#4CAF50' : '#CCCCCC', 
+              color: isReportGenerated ? '#FFFFFF' : '#666666',
+              cursor: isReportGenerated ? 'pointer' : 'not-allowed'
+            }}>Export</button>
       </div>
       <Panel modalIsOpen={modalIsOpen} closeModal={closeModal } transaction={transaction}/>   
     </li>

@@ -378,10 +378,12 @@ ul{
   display: flex;
   gap: 10px;
   width: 40%;
+  justify-content: flex-end;
+  padding: 10px;
 }
 
 .action-btn {
-  padding: 5px 10px;
+  padding: 5px 5px;
   background-color: #007bff;
   color: white;
   cursor: pointer;
@@ -392,10 +394,10 @@ ul{
   text-align: center;
   appearance: button;
   display: flex;
-  align-items: center;
+  align-items: right;
   justify-content: center;
   padding: 10px;
-  width:100%;
+  width: 30%;
   border: 1px solid #000;
   border-radius: 5px;
 }
